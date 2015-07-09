@@ -26,6 +26,17 @@ ImageLoader::ImageLoader(const std::string file)
     m_entity->getTransform().setScale(glm::vec3(aR, 1, 1));
 }
 
+ImageLoader::ImageLoader(Texture* texture)
+{
+  m_entity = new Entity();
+  float aR = texture->getWidth() / (texture->getHeight() * 1.0f);
+  
+  m_entity->addComponent(new MeshRenderer((new Plane())->getMesh(), new Material(texture)));
+  
+  m_entity->getTransform().setScale(glm::vec3(aR, 1, 1));
+}
+
+
 ImageLoader::~ImageLoader(void)
 {
 }

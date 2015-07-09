@@ -10,12 +10,14 @@
 #define __Engine__ImageLoader__
 
 #include "Entity.h"
+#include "Texture.h"
 #include <string>
 
 class ImageLoader
 {
 public:
     ImageLoader(const std::string file);
+    ImageLoader(Texture* texture);
     ~ImageLoader(void);
     
     Entity *getEntity(void);

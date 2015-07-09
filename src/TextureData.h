@@ -22,9 +22,14 @@ public:
   virtual ~TextureData(void);
 
   void createTexture(int width, int height, unsigned char* data, GLenum textureTarget, GLfloat filter);
+  void updateTexture(int width, int height, unsigned char* data, GLenum textureTarget, GLfloat filter);
   void bind(unsigned int unit);
 
+  int getWidth();
+  int getHeight();
 private:
+  int m_width;
+  int m_height;
   GLenum m_textureTarget;
   GLuint m_textureId;
 };
