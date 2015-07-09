@@ -4,20 +4,12 @@
 
 #include "Engine.h"
 
-#include "components/MeshRenderer.h"
 #include "components/Camera.h"
 #include "components/FreeMove.h"
 #include "components/FreeLook.h"
-#include "components/DirectionalLight.h"
-#include "components/SpotLight.h"
-#include "components/PointLight.h"
-#include "components/Sphere.h"
 
-#include "Plane.h"
-#include "Mesh.h"
 #include "Texture.h"
 #include "Logger.h"
-#include "MeshLoader.h"
 #include "MediaLoader.h"
 #include "Video.h"
 
@@ -68,14 +60,12 @@ void CoolGame::init(GLManager *glManager)
   addToScene(il.getEntity());
 
   Entity *ent = new Entity();
-  Camera *cam2 = new Camera(45.0f, getEngine()->getWindow()->getWidth() / (float)getEngine()->getWindow()->getHeight(), 0.1f, 100.0f);
-  ent->addComponent(cam2);
+  primary_camera = new Camera(45.0f, getEngine()->getWindow()->getWidth() / (float)getEngine()->getWindow()->getHeight(), 0.1f, 100.0f);
+  ent->addComponent(primary_camera);
   ent->getTransform().setPosition(glm::vec3(0, 0, 10));
   ent->addComponent(new FreeMove());
   ent->addComponent(new FreeLook());
   addToScene(ent);
-
-  primary_camera = cam2;
 
   getEngine()->getGLManager()->setActiveCamera(primary_camera);
 }
