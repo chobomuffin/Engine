@@ -15,6 +15,11 @@ MediaLoader::MediaLoader(Texture *texture)
   initEntity(texture);
 }
 
+MediaLoader::MediaLoader(Video *video)
+{
+  initEntity(texture);
+}
+
 MediaLoader::~MediaLoader(void)
 {
 }
