@@ -49,17 +49,17 @@ Video::Video(const std::string file)
     return;
   }
 
-  int numBytes = avpicture_get_size(PIX_FMT_RGBA, m_codecContext->width,
+  int numBytes = avpicture_get_size(PIX_FMT_RGB24, m_codecContext->width,
                                 m_codecContext->height);
   m_buffer = (uint8_t *) av_malloc(numBytes * sizeof(uint8_t));
 
-  avpicture_fill((AVPicture *) m_frameRGB, m_buffer, PIX_FMT_RGBA,
+  avpicture_fill((AVPicture *) m_frameRGB, m_buffer, PIX_FMT_RGB24,
                  m_codecContext->width, m_codecContext->height);
 
   m_SwsContext = sws_getContext(m_codecContext->width,
                            m_codecContext->height, m_codecContext->pix_fmt,
                            m_codecContext->width, m_codecContext->height,
-                           PIX_FMT_RGBA, SWS_FAST_BILINEAR, NULL, NULL, NULL);
+                           PIX_FMT_RGB24, SWS_FAST_BILINEAR, NULL, NULL, NULL);
 
   if (m_SwsContext == NULL) {
     log_err("Cannot initialize the sws context");
@@ -76,15 +76,18 @@ Video::~Video(void)
    avformat_close_input(&m_formatContext);
 }
 
-int Video::getWidth() {
+int Video::getWidth(void)
+{
   return m_codecContext->width;
 }
 
-int Video::getHeight() {
+int Video::getHeight(void)
+{
   return m_codecContext->height;
 }
 
-uint8_t* Video::nextFrame() {
+uint8_t* Video::nextFrame(void)
+{
   int retVal;
   while ((retVal = av_read_frame(m_formatContext, &m_packet)) >= 0) {
     if (m_packet.stream_index == m_videoStream) {
@@ -108,6 +111,11 @@ uint8_t* Video::nextFrame() {
   if (retVal >= 0) {
     return m_frameRGB->data[0];
   } else {
-    return NULL;
+    return nullptr;
   }
+}
+
+int Video::getFrameRate(void)
+{
+  return m_frameRate;
 }

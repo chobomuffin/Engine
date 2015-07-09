@@ -12,10 +12,13 @@ class Video
 {
 public:
   Video(const std::string file);
-   ~Video(void);
-   uint8_t* nextFrame();
-   int getWidth();
-   int getHeight();
+  ~Video(void);
+
+  uint8_t *nextFrame(void);
+  int getWidth(void);
+  int getHeight(void);
+  int getFrameRate(void);
+
 private:
   AVFormatContext *m_formatContext = NULL;
   AVCodecContext *m_codecContext;
