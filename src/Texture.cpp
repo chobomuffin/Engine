@@ -22,7 +22,9 @@ Texture::Texture(Asset file, GLenum textureTarget, GLfloat filter)
   } else {
     int x, y, bytesPerPixel;
     unsigned char* data = stbi_load_from_memory(reinterpret_cast<const unsigned char *>(file.read()), file.getSize(), &x, &y, &bytesPerPixel, 4);
-
+    m_width = x;
+    m_height = y;
+  
     if(data == NULL) {
       log_err("Unable to load texture: %s", file.getFileName().c_str());
     } else {
@@ -33,9 +35,18 @@ Texture::Texture(Asset file, GLenum textureTarget, GLfloat filter)
   }
 }
 
+
 Texture::~Texture()
 {
   m_textureData->decrementReference();
+}
+
+int Texture::getWidth() {
+  return m_width;
+}
+
+int Texture::getHeight() {
+  return m_height;
 }
 
 void Texture::bind(unsigned int unit)

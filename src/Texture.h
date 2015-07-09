@@ -21,11 +21,16 @@ class Texture
 public:
   Texture(Asset file, GLenum textureTarget = GL_TEXTURE_2D, GLfloat filter = GL_LINEAR);
   ~Texture(void);
-
+  
+  int getWidth();
+  int getHeight();
+  
   void bind(unsigned int unit = 0);
 
 private:
   TextureData *m_textureData;
+  int m_width;
+  int m_height;
 };
 
 #endif
