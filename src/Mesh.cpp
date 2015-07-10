@@ -23,6 +23,7 @@ Mesh::Mesh(std::string identifier, Vertex vertices[], int vertSize, unsigned int
 
 Mesh::~Mesh(void)
 {
+  // TODO: DELETE MESH FROM CACHE IF IT IS LAST REFERENCE..
   m_meshData->decrementReference();
 }
 

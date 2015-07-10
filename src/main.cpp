@@ -29,6 +29,7 @@ private:
   Video *video;
   TextureData *textureData;
   int accumulator = 0;
+  TextRenderer *tR;
 };
 
 CoolGame::~CoolGame(void)
@@ -43,6 +44,7 @@ void CoolGame::update(int delta)
   uint8_t *frame = nullptr;
 
   if (accumulator >= (1000.0 / video->getFrameRate()) && (frame = video->nextFrame()) != nullptr) {
+    // tR->updateText(std::to_wstring(delta));
     textureData->updateTexture(frame);
     accumulator = 0;
   }
@@ -52,13 +54,14 @@ void CoolGame::update(int delta)
 
 void CoolGame::init(GLManager *glManager)
 {
-  video = new Video("/Users/danielw/workspace/Engine/assets/movie 01.mov");
+  video = new Video("/Users/shervinaflatooni/Downloads/Mograph_test_project/\(Footage\)/user\ replaceable\ assets/videos/movie\ 01.mov");
   textureData = new TextureData(video->getWidth(), video->getHeight(), video->nextFrame(), GL_RGB, GL_TEXTURE_2D, GL_LINEAR);
   Texture* texture = new Texture(textureData);
 
   MediaLoader il = MediaLoader(texture);
   il.getEntity()->getTransform().scale(glm::vec3(10, 10, 10));
   il.getEntity()->getTransform().rotate(glm::vec3(1, 0, 0), 90 * 0.0174532925);
+  il.getEntity()->getTransform().setPosition(glm::vec3(0, 0, -2));
   il.getEntity()->addComponent(new Sphere(1));
   addToScene(il.getEntity());
 
@@ -71,7 +74,8 @@ void CoolGame::init(GLManager *glManager)
   addToScene(ent);
 
   Entity *textEntity = new Entity();
-  textEntity->addComponent(new TextRenderer());
+  tR = new TextRenderer(L"Hi there! How are you?");
+  textEntity->addComponent(tR);
   addToScene(textEntity);
 
   getEngine()->getGLManager()->setActiveCamera(primary_camera);

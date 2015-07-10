@@ -41,6 +41,7 @@ Texture::Texture(TextureData *data) {
 
 Texture::~Texture(void)
 {
+  // TODO: DELETE TEXTURE FROM CACHE IF IT IS LAST REFERENCE..
   m_textureData->decrementReference();
 }
 
