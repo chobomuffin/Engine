@@ -17,6 +17,20 @@ First install required libraries:
 #### Mac Build
 ```
 brew install sdl2 assimp glew glm cmake
+
+
+# Then install freetype gl
+
+cd ../
+brew install Doxygen AntTweakBar
+
+git clone git@github.com:rougier/freetype-gl.git
+cd freetype-gl
+
+cmake .
+make
+ln -s THIS_FOLDER /usr/local/include/
+mv libfreetype-gl.a /usr/local/lib/
 ```
 
 After create the make file or project with cmake:

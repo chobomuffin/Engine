@@ -2,7 +2,7 @@
 #define TEXT_RENDERER_H
 
 #include "../EntityComponent.h"
-#include <freetype-gl.h>
+#include <freetype-gl/freetype-gl.h>
 #include "../Mesh.h"
 
 class TextRenderer : public EntityComponent

@@ -19,8 +19,8 @@ file(GLOB TARGET_SRC
 )
 
 file(GLOB TARGET_SRC_COMPONENTS
-${Engine_SOURCE_DIR}/components/*.cpp
-${Engine_SOURCE_DIR}/components/*.c
+  ${Engine_SOURCE_DIR}/components/*.cpp
+  ${Engine_SOURCE_DIR}/components/*.c
 )
 
 find_package(GLM REQUIRED)
@@ -48,50 +48,8 @@ ELSE ()
   find_package(ASSIMP REQUIRED)
   find_package(GLEW REQUIRED)
   find_package(Freetype REQUIRED)
-
-# Dependency: FFmpeg (required)
-
-FIND_PACKAGE( FFmpeg )
-IF ( MINGW AND CMAKE_TOOLCHAIN_FILE)
-	PKG_CHECK_MODULES (FFMPEG_PKG REQUIRED libavcodec libavfilter libavutil libavdevice libavformat libavformat libswscale)
-	IF (FFMPEG_PKG_FOUND)
-		MESSAGE( "FFmpeg cflags found through pkg-config: ${FFMPEG_PKG_CFLAGS}" )
-		MESSAGE( "FFmpeg ldflags found through pkg-config: ${FFMPEG_PKG_LDFLAGS}" )
-		STRING(REGEX REPLACE ";" " " FFMPEG_PKG_CFLAGS "${FFMPEG_PKG_CFLAGS}")
-		SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FFMPEG_PKG_CFLAGS}")
-		SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FFMPEG_PKG_CFLAGS}")
-		SET(FFMPEG_LIBRARIES ${FFMPEG_LIBRARY} ${FFMPEG_PKG_LDFLAGS})
-		MESSAGE("FFMPEG_LIBRARIES ${FFMPEG_LIBRARIES}")
-	ELSE (FFMPEG_PKG_FOUND)
-		MESSAGE( FATAL_ERROR "FFmpeg cflags/ldflags not found through pkg-config." )
-	ENDIF (FFMPEG_PKG_FOUND)
-ENDIF()
-IF(FFMPEG_LIBAVFORMAT_FOUND)
-	MESSAGE(STATUS "avformat library found: ${FFMPEG_LIBAVFORMAT_LIBRARIES}")
-ELSE()
-	MESSAGE(STATUS "avformat library not found.")
-ENDIF()
-IF(FFMPEG_LIBAVCODEC_FOUND)
-	MESSAGE(STATUS "avcodec library found: ${FFMPEG_LIBAVCODEC_LIBRARIES}")
-ELSE()
-	MESSAGE(STATUS "avcodec library not found.")
-ENDIF()
-IF(FFMPEG_LIBAVUTIL_FOUND)
-	MESSAGE(STATUS "avutil library found: ${FFMPEG_LIBAVUTIL_LIBRARIES}")
-ELSE()
-	MESSAGE(STATUS "avutil library not found.")
-ENDIF()
-IF(FFMPEG_LIBSWSCALE_FOUND)
-	MESSAGE(STATUS "swscale library found: ${FFMPEG_LIBSWSCALE_LIBRARIES}")
-ELSE()
-	MESSAGE(STATUS "swscale library not found.")
-ENDIF()
-IF(FFMPEG_FOUND)
-	INCLUDE_DIRECTORIES(${FFMPEG_INCLUDE_DIR} ${FFMPEG_INCLUDE_DIRS})
-	MESSAGE("Found all FFmpeg libraries in ${FFMPEG_LIBRARIES}.")
-ELSE()
-	MESSAGE(FATAL_ERROR "Some FFmpeg libraries are missing.")
-ENDIF()
+  find_package(FreetypeGl REQUIRED)
+  find_package(FFmpeg REQUIRED)
 
   find_library(corefoundation_lib CoreFoundation)
   set(engine_libs
@@ -102,10 +60,10 @@ ENDIF()
     ${corefoundation_lib}
     ${FFMPEG_LIBRARIES}
     ${FREETYPE_LIBRARIES}
-    /usr/local/lib/libfreetype-gl.a
+    ${FREETYPE_GL_LIBRARIES}
   )
 
-  include_directories(/usr/local/include/freetype-gl ${SDL2_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${ASSIMP_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS})
+  include_directories(${FREETYPE_GL_INCLUDE_DIR} ${SDL2_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${ASSIMP_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS})
 
   add_library (engine SHARED ${TARGET_SRC})
   target_link_libraries (engine ${engine_libs})
