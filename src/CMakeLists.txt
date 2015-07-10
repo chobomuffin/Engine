@@ -47,6 +47,7 @@ ELSE ()
   find_package(SDL2 REQUIRED)
   find_package(ASSIMP REQUIRED)
   find_package(GLEW REQUIRED)
+  find_package(Freetype REQUIRED)
 
 # Dependency: FFmpeg (required)
 
@@ -100,9 +101,11 @@ ENDIF()
     ${GLEW_LIBRARIES}
     ${corefoundation_lib}
     ${FFMPEG_LIBRARIES}
+    ${FREETYPE_LIBRARIES}
+    /usr/local/lib/libfreetype-gl.a
   )
 
-  include_directories(${SDL2_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${ASSIMP_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS})
+  include_directories(/usr/local/include/freetype-gl ${SDL2_INCLUDE_DIR} ${GLM_INCLUDE_DIRS} ${ASSIMP_INCLUDE_DIR} ${GLEW_INCLUDE_DIRS})
 
   add_library (engine SHARED ${TARGET_SRC})
   target_link_libraries (engine ${engine_libs})
