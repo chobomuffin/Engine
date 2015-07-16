@@ -2,13 +2,13 @@
 #include <math.h>
 #include "../Logger.h"
 
-float norm(float n, int x) {
+float norm(float n, float x) {
   return n / x;
 }
 
 TextRenderer::TextRenderer(std::wstring text, std::string font)
 {
-  atlas = texture_atlas_new( 1024, 1024, 1 );
+  atlas = texture_atlas_new( 1024, 1024, 4 );
   createTextMesh(text, font);
 }
 
@@ -31,7 +31,7 @@ void TextRenderer::createTextMesh(std::wstring text, std::string font)
   float penX = 0;
   float penY = 0;
 
-  texture_font_t * m_font = texture_font_new_from_file( atlas, 100, font.c_str() );
+  texture_font_t * m_font = texture_font_new_from_file( atlas, 300, font.c_str() );
   texture_font_load_glyphs( m_font, (wchar_t *) text.c_str() );
   Vertex* vertices = new Vertex[text.length() * 4];
   unsigned int indices[text.length() * 6];
@@ -50,8 +50,13 @@ void TextRenderer::createTextMesh(std::wstring text, std::string font)
 
       float x0  = (float)( penX + norm(glyph->offset_x, m_font->height) );
       float y0  = (float)( penY + norm(glyph->offset_y, m_font->height) );
-      float x1  = (float)( x0 + norm(glyph->width, m_font->height) );
+      // https://github.com/rougier/freetype-gl/blob/87204894a46d7198040f27db19834c64d23f65f5/texture-font.c#L601
+      // because depth is 4 to normalize multiply by 4 + 1 ish
+      // this must be wrong..
+      float x1  = (float)( x0 + norm(glyph->width * 4.9, m_font->height) );
       float y1  = (float)( y0 - norm(glyph->height, m_font->height) );
+
+      log_err("[%f]", (float)glyph->width);
 
       float s0 = glyph->s0;
       float t0 = glyph->t0;

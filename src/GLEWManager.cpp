@@ -22,6 +22,7 @@ GLEWManager::GLEWManager(void)
   }
 
   log_info("Status: Using GLEW %s", glewGetString(GLEW_VERSION));
+  log_info("OpenGL version supported by this platform (%s): \n", glGetString(GL_VERSION));
 #endif
 }
 

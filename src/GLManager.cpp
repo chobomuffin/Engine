@@ -98,7 +98,13 @@ void GLManager::renderScene(Entity *scene)
   forwardAmbient->setUniformMatrix4f("View", m_activeCamera->getViewMatrix());
   forwardAmbient->setUniformMatrix4f("Proj", m_activeCamera->getProjectionMatrix());
 
+  // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   scene->renderAll(forwardAmbient);
+  glDisable(GL_BLEND);
+  // glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_ONE, GL_ONE);
